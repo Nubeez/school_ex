@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        table,
+        td,
+        tr,
+        th {
+            border: 2px solid black;
+            border-collapse: collapse;
+            text-align: center;
+        }
+    </style>
+    <script>
+        $(function () {
+
+            $.ajax({
+                url: "./json/school.json",
+                dataType: 'json',
+
+                success: function (data) {
+                    if (data.length > 0) {
+                        var tb = $("<table/>");
+
+                        var row1 = $("<tr/>").append(
+                            $("<th/>").text('지역'),
+                            $("<th/>").text('분류'),
+                            $("<th/>").text('상호명'),
+                            $("<th/>").text('전화번호'),
+                            $("<th/>").text('팩스번호'),
+                            $("<th/>").text('주소'),
+                            $("<th/>").text('도로명주소'),
+                            $("<th/>").text('우편번호'),
+                        );
+                        tb.append(row1);
+
+                        for (i in data) {
+                            var SIGUN_NM = data[i].SIGUN_NM;
+                            var FOUND_DIV_NM = data[i].FOUND_DIV_NM;
+                            var FACLT_NM = data[i].FACLT_NM;
+                            var TELNO = data[i].TELNO;
+                            var FAXNO = data[i].FAXNO;
+                            var REFINE_LOTNO_ADDR = data[i].REFINE_LOTNO_ADDR;
+                            var REFINE_ROADNM_ADDR = data[i].REFINE_ROADNM_ADDR;
+                            var REFINE_ZIPNO = data[i].REFINE_ZIPNO;
+
+                            var row2 = $("<tr/>").append(
+                                $("<td/>").text(SIGUN_NM),
+                                $("<td/>").text(FOUND_DIV_NM),
+                                $("<td/>").text(FACLT_NM),
+                                $("<td/>").text(TELNO),
+                                $("<td/>").text(FAXNO),
+                                $("<td/>").text(REFINE_LOTNO_ADDR),
+                                $("<td/>").text(REFINE_ROADNM_ADDR),
+                                $("<td/>").text(REFINE_ZIPNO),
+                            );
+                            tb.append(row2);
+                        }
+                        $(".wrap").append(tb);
+                    };
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>경기도 유치원 현황</h1><br>
+        <input type="text" name="search" id="search" placeholder="찾아보기.."><br><br>
+    </div>
+    <script>
+        //search
+
+        $('#search').on('keyup', function () {
+            var value = $(this).val();
+            $(".wrap tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    </script>
+</body>
+
+</html>
